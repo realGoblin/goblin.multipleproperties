@@ -50,9 +50,9 @@ class CIBlockOption
   /*--------- вывод поля свойства на странице редактирования ---------*/
   public function GetPropertyFieldHtml($arProperty, $value, $strHTMLControlName)
   {
-    // echo "--------------  arProperty[USER_TYPE_SETTINGS] -----------";
+    // echo "--------------  arProperty -----------";
     // echo "<pre>";
-    // var_dump($arProperty["USER_TYPE_SETTINGS"]);
+    // var_dump($arProperty);
     // echo "</pre>";
     // echo "--------------  strHTMLControlName -----------";
     // echo "<pre>";
@@ -73,6 +73,9 @@ class CIBlockOption
         if((!is_array($arResult["FIELD"][$keyField]['VALUE'])&&$arResult["FIELD"][$keyField]['VALUE']!="")&&($valueField["TYPE"]=="file")){
           $returnString = $returnString.' '.$valueField["NAME_TYPE"]. ' <img src="'.\CFile::GetPath($arResult["FIELD"][$keyField]['VALUE']).'"><input type="hidden" name="'.$strHTMLControlName["VALUE"].'[FIELD]['.$keyField.'][VALUE]" value="'.$arResult["FIELD"][$keyField]['VALUE'].
           '"></br>';
+        }elseif($valueField["TYPE"]=="text"&&$arProperty["ROW_COUNT"]>1){
+          $returnString = $returnString.' '.$valueField["NAME_TYPE"]. ' <textarea  cols="'.$arProperty["COL_COUNT"].'" rows="'.$arProperty["ROW_COUNT"].'" name="'.$strHTMLControlName["VALUE"].'[FIELD]['.$keyField.'][VALUE]" value="'.$arResult["FIELD"][$keyField]['VALUE'].'"></textarea></br>';
+
         }else{
           $returnString = $returnString.' '.$valueField["NAME_TYPE"]. ' <input type="'.$valueField["TYPE"].'" name="'.$strHTMLControlName["VALUE"].'[FIELD]['.$keyField.'][VALUE]" value="'.$arResult["FIELD"][$keyField]['VALUE'].'"></br>';
         }
@@ -170,7 +173,7 @@ class CIBlockOption
     // echo "<pre>";
     // var_dump($value);
     // echo "</pre>";
-    // echo "--------------  arProperty[USER_TYPE_SETTINGS] -----------";
+    // echo "--------------  arProperty -----------";
     // echo "<pre>";
     // var_dump($arProperty["USER_TYPE_SETTINGS"]);
     // echo "</pre>";
