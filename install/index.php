@@ -25,10 +25,7 @@ Class goblin_multipleproperties extends CModule
     global $DB, $APPLICATION, $step;
     RegisterModule($this->MODULE_ID);
     $this->InstallEvents();
-    	// CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/goblin.multipleproperties/install/js/security", $_SERVER["DOCUMENT_ROOT"]."/bitrix/js/goblin.multipleproperties", true, true);
-    // copy($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/goblin.multipleproperties/install/admin/multipleproperties.php",$_SERVER["DOCUMENT_ROOT"]."/bitrix/admin/multipleproperties.php");
     copy($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/goblin.multipleproperties/admin/multipleproperties.js",$_SERVER["DOCUMENT_ROOT"]."/bitrix/js/multipleproperties.js");
-
     $APPLICATION->IncludeAdminFile(GetMessage("FORM_INSTALL_TITLE"),$_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/goblin.multipleproperties/install/step.php");
     return true;
     //

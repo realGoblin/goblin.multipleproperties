@@ -18,31 +18,13 @@ class CIBlockOption
   }
   public function ConvertFromDB($arProperty, $value)
   {
-    // ["FIELD"]
-    // echo "--------------  arProperty -----------";
-    // echo "<pre>";
-    // var_dump($arProperty);
-    // echo "</pre>";
-    // echo "--------------  value-bd -----------";
-    // echo "<pre>";
-    // var_dump($value);
-    // echo "</pre>";
     $result = array("VALUE"=>json_decode($value["VALUE"],true));
-    // echo "<pre>";
-    // var_dump($result);
-    // echo "</pre>";
-    // exit;
     return $result;
   }
   // перед сохранением настроек
   public function PrepareSettings($arFields)
   {
-    // echo "<pre>";
-    // var_dump($arFields);
-    // echo "</pre>";
-    // exit;
     $result = array(
-      // "NUMBER_OF_FIELDS" => intval($arFields["USER_TYPE_SETTINGS"]["NUMBER_OF_FIELDS"]),
       "FIELD" =>  $arFields["USER_TYPE_SETTINGS"]["FIELD"],
   );
      return $result;
@@ -50,24 +32,7 @@ class CIBlockOption
   /*--------- вывод поля свойства на странице редактирования ---------*/
   public function GetPropertyFieldHtml($arProperty, $value, $strHTMLControlName)
   {
-    // echo "--------------  arProperty -----------";
-    // echo "<pre>";
-    // var_dump($arProperty);
-    // echo "</pre>";
-    // echo "--------------  strHTMLControlName -----------";
-    // echo "<pre>";
-    // var_dump($strHTMLControlName);
-    // echo "</pre>";
-    // echo "--------------  value -----------";
-    // echo "<pre>";
-    // var_dump($value);
-    // echo "</pre>";
-    // $arResult = json_decode($value["VALUE"],true);
     $arResult = $value["VALUE"];
-    // echo "--------------  arResult -----------";
-    // echo "<pre>";
-    // var_dump($arResult);
-    // echo "</pre>";
     $returnString = "";
       foreach ($arProperty["USER_TYPE_SETTINGS"]["FIELD"] as $keyField => $valueField) {
         if((!is_array($arResult["FIELD"][$keyField]['VALUE'])&&$arResult["FIELD"][$keyField]['VALUE']!="")&&($valueField["TYPE"]=="file")){
@@ -85,27 +50,11 @@ class CIBlockOption
   // перед сохранением значения свойств
   public function ConvertToDB($arProperty, $value)
   {
-    // echo "--------------  arProperty -----------";
-    // echo "<pre>";
-    // var_dump($arProperty);
-    // echo "</pre>";
-    // echo "--------------  +value+ -----------";
-    // echo "<pre>";
-    // var_dump($value);
-    // echo "</pre>";
     foreach ($arProperty["USER_TYPE_SETTINGS"]["FIELD"] as $keyField => $valueField) {
-      // echo "keyField";
-      // var_dump($keyField);
 
       $thisValue  = $value["VALUE"]["FIELD"][$keyField]["VALUE"];
-      // var_dump($value);
-      // echo "--------------  +thisValue+ -----------";
-        // var_dump($thisValue);
-        // echo"<br>";
       if($valueField["TYPE"]=="file"){
-        // echo "___________________________<br>";
         if(is_array($thisValue)){
-          // echo "-------------+++-------------------<br>";
         $file = array(
           "name"=>$thisValue["name"],
           "size"=>$thisValue["size"],
@@ -133,22 +82,8 @@ class CIBlockOption
         $arResult["FIELD"][$keyField] = $arResultItem;
       }
     }
-    // echo "--------------  arResult -----------";
-    // echo "<pre>";
-    // var_dump($arResult);
-    // echo "</pre>";
     $result=json_encode($arResult);
     $value["VALUE"] = $result;
-    // echo "--------------  valueRes -----------";
-    // echo "<pre>";
-    // var_dump($value);
-    // echo "</pre>";
-    // $result=json_encode($value["VALUE"]);
-    // echo "--------------  result -----------";
-    // echo "<pre>";
-    // var_dump($result);
-    // echo "</pre>";
-    // exit;
     return $result;
   }
   /*--------- вывод поля свойства на странице настроек ---------*/
@@ -165,34 +100,12 @@ class CIBlockOption
             \CJSCore::RegisterExt($ext, $arExt);
         }
     \CUtil::InitJSCore('multiprop');
-    // echo "--------------  strHTMLControlName -----------";
-    // echo "<pre>";
-    // var_dump($strHTMLControlName);
-    // echo "</pre>";
-    // echo "--------------  value -----------";
-    // echo "<pre>";
-    // var_dump($value);
-    // echo "</pre>";
-    // echo "--------------  arProperty -----------";
-    // echo "<pre>";
-    // var_dump($arProperty["USER_TYPE_SETTINGS"]);
-    // echo "</pre>";
     $arPropertyFields = array(
            "HIDE" => array("FILTRABLE", "ROW_COUNT", "COL_COUNT", "DEFAULT_VALUE"),
            "SET" => array("FILTRABLE" => "N"),
            "USER_TYPE_SETTINGS_TITLE" => "Настройки даты/времени"
        );
-       /*
-       <select name="CAT" class="" id="">
-       <option value="" <?if($type==''){echo "selected";}?>>Любая недвижимость</option>
-       </select>
-       */
        $button  = '<tr id="button"><td><input type="button" id="add" onclick="addField()" value="добавить"></td></tr>';
-       $script  = '';/*
-       $returnString = '<tr>
-       <td>Число полей:</td>
-       <td><input type="text" value="'.$arProperty["USER_TYPE_SETTINGS"]["NUMBER_OF_FIELDS"].'" size="5" name="'.$strHTMLControlName["NAME"].'[NUMBER_OF_FIELDS]"></td>
-       </tr><br>';*/
        $returnString  = "";
          foreach ($arProperty["USER_TYPE_SETTINGS"]["FIELD"] as $key => $value){
            $numberField = $key+1;
@@ -211,7 +124,7 @@ class CIBlockOption
             <td><input type="button" onclick="dellField('.$key.')" value="Удалить"></td>
            </tr><br>';
          }
-         $returnString  = $returnString.$button.$script;
+         $returnString  = $returnString.$button;
        return $returnString;
   }
 }
