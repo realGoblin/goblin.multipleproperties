@@ -16,6 +16,7 @@ class CIBlockOption
       "ConvertFromDB"=>array("MultuProp\CIBlockOption","ConvertFromDB")
     );
   }
+  // перед выводом из бд
   public function ConvertFromDB($arProperty, $value)
   {
     $result = array("VALUE"=>json_decode($value["VALUE"],true));
@@ -35,12 +36,14 @@ class CIBlockOption
     $arResult = $value["VALUE"];
     $returnString = "";
       foreach ($arProperty["USER_TYPE_SETTINGS"]["FIELD"] as $keyField => $valueField) {
-        if((!is_array($arResult["FIELD"][$keyField]['VALUE'])&&$arResult["FIELD"][$keyField]['VALUE']!="")&&($valueField["TYPE"]=="file")){
+        if((!is_array($arResult["FIELD"][$keyField]['VALUE'])&&$arResult["FIELD"][$keyField]['VALUE']!="")&&
+        ($valueField["TYPE"]=="file")&&
+        ($arResult["FIELD"][$keyField]["TYPE"]=="file")
+        ){
           $returnString = $returnString.' '.$valueField["NAME_TYPE"]. ' <img src="'.\CFile::GetPath($arResult["FIELD"][$keyField]['VALUE']).'"><input type="hidden" name="'.$strHTMLControlName["VALUE"].'[FIELD]['.$keyField.'][VALUE]" value="'.$arResult["FIELD"][$keyField]['VALUE'].
           '"></br>';
         }elseif($valueField["TYPE"]=="text"&&$arProperty["ROW_COUNT"]>1){
-          $returnString = $returnString.' '.$valueField["NAME_TYPE"]. ' <textarea  cols="'.$arProperty["COL_COUNT"].'" rows="'.$arProperty["ROW_COUNT"].'" name="'.$strHTMLControlName["VALUE"].'[FIELD]['.$keyField.'][VALUE]" value="'.$arResult["FIELD"][$keyField]['VALUE'].'"></textarea></br>';
-
+          $returnString = $returnString.' '.$valueField["NAME_TYPE"]. ' <textarea  name="'.$strHTMLControlName["VALUE"].'[FIELD]['.$keyField.'][VALUE]"  cols="'.$arProperty["COL_COUNT"].'" rows="'.$arProperty["ROW_COUNT"].'">'.$arResult["FIELD"][$keyField]['VALUE'].'</textarea></br>';
         }else{
           $returnString = $returnString.' '.$valueField["NAME_TYPE"]. ' <input type="'.$valueField["TYPE"].'" name="'.$strHTMLControlName["VALUE"].'[FIELD]['.$keyField.'][VALUE]" value="'.$arResult["FIELD"][$keyField]['VALUE'].'"></br>';
         }
