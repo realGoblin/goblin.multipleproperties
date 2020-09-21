@@ -42,7 +42,7 @@ class CIBlockOption
           $arResult["FIELD"][$keyField]["TYPE"]=="file"
         ){
           $returnString = $returnString.' '.$valueField["NAME_TYPE"]. '<img style="max-width: 300px;margin:10px 0;" src="'.\CFile::GetPath($arResult["FIELD"][$keyField]['VALUE']).'">
-          <input type="hidden" name="'.$strHTMLControlName["VALUE"].'[OLD_FILE][VALUE]" value="'.$arResult["FIELD"][$keyField]['VALUE'].
+          <input type="hidden" name="'.$strHTMLControlName["VALUE"].'[FIELD]['.$keyField.'][OLD_FILE]" value="'.$arResult["FIELD"][$keyField]['VALUE'].
           '"></br><span>Заменить файл</span><input type="'.$valueField["TYPE"].'" name="'.$strHTMLControlName["VALUE"].'[FIELD]['.$keyField.'][VALUE]" value="'.$arResult["FIELD"][$keyField]['VALUE'].'"><br>';
         }elseif($valueField["TYPE"]=="text"&&$arProperty["ROW_COUNT"]>1){
           $returnString = $returnString.' '.$valueField["NAME_TYPE"]. '<textarea  style="margin:10px 0;" name="'.$strHTMLControlName["VALUE"].'[FIELD]['.$keyField.'][VALUE]"  cols="'.$arProperty["COL_COUNT"].'" rows="'.$arProperty["ROW_COUNT"].'">'.$arResult["FIELD"][$keyField]['VALUE'].'</textarea></br>';
@@ -54,9 +54,9 @@ class CIBlockOption
     return $returnString;
   }
   // валидания при множественных значениях
-  function validate($value){
+  function validate($value,$oldID){
     if(is_array($value)){
-      if(!empty($value["tmp_name"])){
+      if(!empty($value["tmp_name"])||!empty($oldID)){
         return true;
       }else{
         return false;
@@ -73,13 +73,13 @@ class CIBlockOption
   public function ConvertToDB($arProperty, $value)
   {
     foreach ($arProperty["USER_TYPE_SETTINGS"]["FIELD"] as $keyField => $valueField) {
-      if(CIBlockOption::validate($value["VALUE"]["FIELD"][$keyField]["VALUE"])){
+      if(CIBlockOption::validate($value["VALUE"]["FIELD"][$keyField]["VALUE"],$value["VALUE"]["FIELD"][$keyField]["OLD_FILE"])){
         $thisValue  = $value["VALUE"]["FIELD"][$keyField]["VALUE"];
         if($valueField["TYPE"]=="file"){
-          if(empty($value["VALUE"]["OLD_FILE"]["VALUE"])){
+          if(empty($value["VALUE"]["FIELD"][$keyField]["OLD_FILE"])){
             $idOldFile  = "";
           }else{
-            $idOldFile  = $value["VALUE"]["OLD_FILE"]["VALUE"];
+            $idOldFile  = $value["VALUE"]["FIELD"][$keyField]["OLD_FILE"];
           }
           if(is_array($thisValue)&&(!empty($thisValue["tmp_name"]))){
           $file = array(
